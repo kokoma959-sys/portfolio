@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pi Seth — UX/UI Designer Portfolio</title>
+<meta name="description" content="Pi Seth — UX/UI designer crafting modern digital experiences." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#030712; --bg2:#111827; --neon:#38BDF8; --glow:#8B5CF6; --pink:#EC4899;
+    --white:#F9FAFB; --gray:#9CA3AF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg);color:var(--white);
+    min-height:100vh;overflow-x:hidden;line-height:1.6;
+    cursor:none;
+  }
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+
+  /* --- Background --- */
+  .bg-wrap{position:fixed;inset:0;z-index:-1;overflow:hidden}
+  .bg-gradient{
+    position:absolute;inset:0;
+    background:linear-gradient(135deg,#030712,#111827,#1E1B4B,#312E81);
+    background-size:400% 400%;
+    animation:gradientMove 15s ease infinite;
+  }
+  .bg-grid{
+    position:absolute;inset:0;opacity:.6;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:40px 40px;
+  }
+  .glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.5;pointer-events:none}
+  .glow.blue{background:var(--neon);width:500px;height:500px;left:-10%;top:10%;animation:float 14s ease-in-out infinite}
+  .glow.purple{background:var(--glow);width:600px;height:600px;right:-5%;top:40%;animation:float 8s ease-in-out infinite}
+  .glow.pink{background:var(--pink);width:400px;height:400px;left:30%;bottom:5%;animation:float 12s ease-in-out infinite;opacity:.4}
+  .bg-fade{position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(3,7,18,.3),rgba(3,7,18,.8))}
+
+  @keyframes gradientMove{
+    0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
+  }
+  @keyframes float{
+    0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-30px)}
+  }
+  @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* --- Cursor --- */
+  .cursor{
+    position:fixed;width:14px;height:14px;border-radius:50%;
+    background:var(--neon);box-shadow:0 0 20px 8px rgba(56,189,248,.6);
+    transform:translate(-50%,-50%);pointer-events:none;z-index:9999;
+    transition:transform .2s ease;
+  }
+  .cursor.hover{transform:translate(-50%,-50%) scale(1.8)}
+  @media (max-width:768px){.cursor{display:none}body{cursor:auto}}
+
+  /* --- Glass helpers --- */
+  .glass{
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:24px;
+  }
+  .glass-hover{transition:all .4s cubic-bezier(.2,.8,.2,1)}
+  .glass-hover:hover{
+    transform:translateY(-10px);
+    border-color:rgba(56,189,248,.4);
+    box-shadow:0 0 30px rgba(56,189,248,.3),0 0 60px rgba(139,92,246,.2);
+  }
+  .text-gradient{
+    background:linear-gradient(135deg,#38BDF8 0%,#8B5CF6 50%,#EC4899 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* --- Reveal --- */
+  .reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* --- Nav --- */
+  nav.top{
+    position:fixed;top:16px;left:50%;transform:translateX(-50%);
+    z-index:50;width:calc(100% - 32px);max-width:1100px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 24px;border-radius:9999px;
+  }
+  nav .logo{font-family:'Space Grotesk';font-weight:700;letter-spacing:.05em}
+  nav .links{display:flex;gap:28px;font-size:14px;color:var(--gray)}
+  nav .links a:hover{color:var(--white)}
+  nav .cta{
+    background:var(--neon);color:#031022;padding:8px 18px;border-radius:999px;
+    font-size:12px;font-weight:600;transition:.3s;
+  }
+  nav .cta:hover{box-shadow:0 0 20px rgba(56,189,248,.6)}
+  @media (max-width:760px){nav .links{display:none}}
+
+  /* --- Sections --- */
+  section{padding:120px 24px;max-width:1200px;margin:0 auto;position:relative}
+  .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.3em;color:var(--neon);margin-bottom:12px}
+  h2.section-title{font-size:clamp(32px,5vw,52px);font-weight:700;max-width:720px}
+
+  /* --- Hero --- */
+  .hero{min-height:100vh;display:grid;grid-template-columns:1fr;align-items:center;gap:48px;padding-top:140px}
+  @media (min-width:980px){.hero{grid-template-columns:1.05fr 1fr}}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;font-size:12px;color:var(--gray);
+    background:rgba(255,255,255,.05);backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.1);margin-bottom:24px;
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--neon);box-shadow:0 0 10px var(--neon);animation:pulse 2s infinite}
+  h1.hero-title{font-size:clamp(40px,7vw,84px);font-weight:700}
+  .typer{display:inline-block}
+  .caret{display:inline-block;width:3px;height:.9em;background:var(--neon);vertical-align:-.05em;margin-left:6px;animation:blink 1s step-end infinite}
+  .hero p{margin:24px 0;color:var(--gray);max-width:520px;font-size:18px}
+  .btn-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+  .btn{
+    padding:14px 28px;border-radius:999px;font-size:14px;font-weight:600;
+    transition:all .3s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:none;
+  }
+  .btn-primary{background:var(--neon);color:#031022}
+  .btn-primary:hover{box-shadow:0 0 30px rgba(56,189,248,.6)}
+  .btn-ghost{background:rgba(255,255,255,.05);color:var(--white);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1)}
+  .btn-ghost:hover{border-color:rgba(139,92,246,.5);box-shadow:0 0 30px rgba(139,92,246,.4)}
+  .stats{display:flex;gap:36px;margin-top:48px;flex-wrap:wrap}
+  .stat .num{font-family:'Space Grotesk';font-size:28px;font-weight:700}
+  .stat .lbl{color:var(--gray);font-size:14px}
+
+  /* Mockups */
+  .mockups{position:relative;height:560px;display:none}
+  @media (min-width:980px){.mockups{display:block}}
+  .mock{position:absolute;border-radius:24px;padding:20px}
+  .mock-1{right:0;top:0;width:280px;box-shadow:0 0 50px rgba(56,189,248,.25);animation:float 6s ease-in-out infinite}
+  .mock-1 .v{font-family:'Space Grotesk';font-size:28px;font-weight:700}
+  .mock-1 .sub{color:var(--gray);font-size:12px;margin-top:2px}
+  .bars{display:flex;gap:6px;align-items:flex-end;height:80px;margin-top:16px}
+  .bars span{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(to top,var(--neon),var(--glow));opacity:.8}
+  .mock-2{left:0;top:160px;width:250px;box-shadow:0 0 50px rgba(139,92,246,.3);animation:float 7s ease-in-out infinite;animation-delay:-1s}
+  .mock-2 .cover{height:130px;border-radius:16px;background:linear-gradient(135deg,var(--glow),var(--neon),var(--pink));opacity:.8;margin-bottom:12px}
+  .mock-2 .ttl{font-size:14px;font-weight:600}
+  .mock-2 .sub{font-size:12px;color:var(--gray);margin-top:2px}
+  .tags{display:flex;gap:8px;margin-top:12px}
+  .tag{font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.1)}
+  .orbit{position:absolute;right:40px;bottom:40px;width:180px;height:180px;border:1px solid rgba(255,255,255,.1);border-radius:50%;animation:spin 30s linear infinite}
+  .orbit i{position:absolute;border-radius:50%}
+  .orbit i:nth-child(1){width:16px;height:16px;background:var(--pink);box-shadow:0 0 20px var(--pink);left:50%;top:-8px;transform:translateX(-50%)}
+  .orbit i:nth-child(2){width:12px;height:12px;background:var(--neon);box-shadow:0 0 20px var(--neon);right:-6px;top:50%;transform:translateY(-50%)}
+  .orbit i:nth-child(3){width:12px;height:12px;background:var(--glow);box-shadow:0 0 20px var(--glow);left:50%;bottom:-6px;transform:translateX(-50%)}
+  .mock-3{left:48px;bottom:80px;width:230px;padding:16px;animation:float 5s ease-in-out infinite;animation-delay:-.5s}
+  .ds-row{display:flex;align-items:center;gap:12px}
+  .ds-row .ico{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--neon),var(--glow))}
+  .ds-row .t{font-size:12px;font-weight:600}
+  .ds-row .s{font-size:10px;color:var(--gray)}
+  .prog{margin-top:12px;height:6px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden}
+  .prog i{display:block;height:100%;width:75%;background:linear-gradient(to right,var(--neon),var(--pink));border-radius:999px}
+
+  /* --- About --- */
+  .about-grid{display:grid;grid-template-columns:1fr;gap:40px;margin-top:48px}
+  @media (min-width:900px){.about-grid{grid-template-columns:1.5fr 1fr}}
+  .about-grid p{color:var(--gray);font-size:18px}
+  .about-card{padding:24px}
+  .about-card .lbl{font-size:13px;color:var(--gray)}
+  .about-card .now{font-family:'Space Grotesk';font-size:22px;font-weight:700;margin-top:4px}
+  .meta{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;font-size:13px}
+  .meta .k{color:var(--gray)}
+  .meta .v{font-weight:600}
+  .meta .v.on{color:var(--neon)}
+
+  /* --- Skills --- */
+  .skills-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:56px}
+  .skill{padding:24px;border-radius:20px}
+  .skill .ic{
+    width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(56,189,248,.2),rgba(139,92,246,.2));color:var(--neon);
+    margin-bottom:18px;transition:.4s;font-size:22px;
+  }
+  .skill:hover .ic{background:linear-gradient(135deg,var(--neon),var(--glow));color:#031022;box-shadow:0 0 25px rgba(56,189,248,.6)}
+  .skill .name{font-family:'Space Grotesk';font-size:17px;font-weight:600}
+  .skill .desc{color:var(--gray);font-size:13px;margin-top:4px}
+
+  /* --- Projects --- */
+  .work-head{display:flex;align-items:end;justify-content:space-between;gap:24px}
+  .work-grid{display:grid;gap:28px;grid-template-columns:1fr;margin-top:56px}
+  @media (min-width:820px){.work-grid{grid-template-columns:1fr 1fr}}
+  .proj{display:block;overflow:hidden;border-radius:24px}
+  .proj .img{position:relative;height:280px;overflow:hidden}
+  .proj .img::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:40px 40px;opacity:.3;z-index:1}
+  .proj.p1 .img{background:linear-gradient(135deg,var(--neon),var(--glow),var(--pink))}
+  .proj.p2 .img{background:linear-gradient(135deg,var(--pink),var(--glow),var(--neon))}
+  .proj.p3 .img{background:linear-gradient(135deg,var(--glow),var(--pink),var(--neon))}
+  .proj.p4 .img{background:linear-gradient(135deg,var(--neon),var(--glow))}
+  .proj .label{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
+  }
+  .proj .label span{
+    padding:16px 32px;border-radius:18px;font-family:'Space Grotesk';font-size:22px;font-weight:700;
+    background:rgba(255,255,255,.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);
+    transition:.6s;
+  }
+  .proj:hover .label span{transform:scale(1.08)}
+  .proj .arrow{
+    position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;z-index:2;
+    background:rgba(255,255,255,.1);backdrop-filter:blur(20px);transition:.4s;
+  }
+  .proj:hover .arrow{transform:rotate(45deg)}
+  .proj .meta-row{display:flex;justify-content:space-between;align-items:center;padding:24px}
+  .proj .ttl{font-family:'Space Grotesk';font-size:19px;font-weight:600}
+  .proj .tag2{font-size:13px;color:var(--gray);margin-top:4px}
+  .proj .yr{font-size:13px;color:var(--gray)}
+
+  /* --- Timeline --- */
+  .timeline{position:relative;margin-top:56px;max-width:900px;margin-left:auto;margin-right:auto}
+  .timeline::before{content:"";position:absolute;left:16px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--neon),var(--glow),var(--pink))}
+  @media (min-width:760px){.timeline::before{left:50%}}
+  .t-item{position:relative;margin-bottom:36px;display:flex}
+  .t-dot{position:absolute;left:16px;top:18px;width:14px;height:14px;border-radius:50%;background:var(--neon);box-shadow:0 0 20px var(--neon);transform:translateX(-50%)}
+  @media (min-width:760px){.t-dot{left:50%}}
+  .t-card{margin-left:48px;width:100%;padding:22px;border-radius:20px}
+  @media (min-width:760px){
+    .t-item{justify-content:flex-start}
+    .t-item:nth-child(even){justify-content:flex-end}
+    .t-card{margin-left:0;width:calc(50% - 32px);margin-right:auto;padding-right:24px}
+    .t-item:nth-child(even) .t-card{margin-right:0;margin-left:auto;padding-right:22px;padding-left:24px}
+  }
+  .t-year{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--neon)}
+  .t-role{font-family:'Space Grotesk';font-size:19px;font-weight:700;margin-top:4px}
+  .t-co{font-size:13px;color:var(--glow)}
+  .t-desc{font-size:14px;color:var(--gray);margin-top:8px}
+
+  /* --- Contact --- */
+  .contact h2{text-align:center;margin:0 auto;font-size:clamp(36px,6vw,64px)}
+  .contact .lede{text-align:center;color:var(--gray);max-width:520px;margin:16px auto 0}
+  form.contact-form{margin-top:56px;padding:36px;border-radius:28px;max-width:760px;margin-left:auto;margin-right:auto}
+  .grid2{display:grid;gap:24px;grid-template-columns:1fr}
+  @media (min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+  .field label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:var(--gray);margin-bottom:8px}
+  .field input,.field textarea{
+    width:100%;background:rgba(255,255,255,.05);color:var(--white);
+    border:none;border-radius:14px;padding:14px 18px;font-size:14px;font-family:inherit;
+    outline:1px solid rgba(255,255,255,.1);transition:.3s;
+  }
+  .field input:focus,.field textarea:focus{outline-color:var(--neon);box-shadow:0 0 25px rgba(56,189,248,.3)}
+  .submit{
+    margin-top:24px;padding:14px 28px;border-radius:999px;border:none;cursor:none;
+    background:linear-gradient(to right,var(--neon),var(--glow),var(--pink));
+    color:#031022;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;
+    transition:.3s;
+  }
+  .submit:hover{box-shadow:0 0 30px rgba(139,92,246,.6)}
+  .socials{display:flex;gap:16px;justify-content:center;margin-top:40px}
+  .socials a{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+
+  footer{border-top:1px solid rgba(255,255,255,.05);padding:32px 24px;color:var(--gray);font-size:14px}
+  footer .inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+  footer .heart{color:var(--pink)}
+</style>
+</head>
+<body>
+
+<div class="bg-wrap">
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+  <div class="glow blue"></div>
+  <div class="glow purple"></div>
+  <div class="glow pink"></div>
+  <div class="bg-fade"></div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+
+<nav class="top glass">
+  <a href="#" class="logo text-gradient">PI SETH</a>
+  <div class="links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#work">Work</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="cta">Let's Talk</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="reveal">
+    <div class="badge"><span class="dot"></span>Available for new projects</div>
+    <h1 class="hero-title">
+      Hello —<br/>
+      I'm <span class="text-gradient">Pi Seth</span><br/>
+      <span class="typer text-gradient" id="typer">UX/UI Designer</span><span class="caret"></span>
+    </h1>
+    <p>Crafting modern digital experiences with intuitive interfaces and creative interactions that connect brands with humans.</p>
+    <div class="btn-row">
+      <a href="#work" class="btn btn-primary">Explore Work →</a>
+      <a href="#contact" class="btn btn-ghost">Contact Me</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num text-gradient">50+</div><div class="lbl">Projects</div></div>
+      <div class="stat"><div class="num text-gradient">6yrs</div><div class="lbl">Experience</div></div>
+      <div class="stat"><div class="num text-gradient">30+</div><div class="lbl">Clients</div></div>
+    </div>
+  </div>
+
+  <div class="mockups reveal">
+    <div class="mock mock-1 glass">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:12px;color:var(--gray)">Dashboard</span>
+        <span style="display:flex;gap:4px">
+          <i style="width:8px;height:8px;border-radius:50%;background:var(--pink);display:inline-block"></i>
+          <i style="width:8px;height:8px;border-radius:50%;background:var(--neon);display:inline-block"></i>
+          <i style="width:8px;height:8px;border-radius:50%;background:var(--glow);display:inline-block"></i>
+        </span>
+      </div>
+      <div class="v text-gradient">$24,580</div>
+      <div class="sub">+12.4% this week</div>
+      <div class="bars">
+        <span style="height:40%"></span><span style="height:65%"></span><span style="height:35%"></span>
+        <span style="height:80%"></span><span style="height:55%"></span><span style="height:90%"></span><span style="height:70%"></span>
+      </div>
+    </div>
+
+    <div class="mock mock-2 glass">
+      <div class="cover"></div>
+      <div class="ttl">Travel Booking</div>
+      <div class="sub">Mobile App · iOS</div>
+      <div class="tags"><span class="tag">UI</span><span class="tag">UX</span></div>
+    </div>
+
+    <div class="orbit"><i></i><i></i><i></i></div>
+
+    <div class="mock mock-3 glass">
+      <div class="ds-row">
+        <div class="ico"></div>
+        <div>
+          <div class="t">Design System</div>
+          <div class="s">128 components</div>
+        </div>
+      </div>
+      <div class="prog"><i></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="eyebrow">About</div>
+    <h2 class="section-title">Who is <span class="text-gradient">Pi Seth?</span></h2>
+  </div>
+  <div class="about-grid">
+    <div class="reveal">
+      <p>I'm a UX/UI designer passionate about creating clean, engaging, and user-focused digital experiences that combine creativity with functionality. I help startups and brands turn complex ideas into elegant, intuitive products.</p>
+      <p style="margin-top:20px;font-size:16px">With a background in product design and a love for motion and micro-interactions, I design across web, mobile, and design systems — always with the user at the center.</p>
+    </div>
+    <div class="reveal glass about-card">
+      <div class="lbl">Currently</div>
+      <div class="now">Senior Product Designer</div>
+      <div class="meta">
+        <div><div class="k">Based in</div><div class="v">Phnom Penh, KH</div></div>
+        <div><div class="k">Languages</div><div class="v">EN · KM</div></div>
+        <div><div class="k">Focus</div><div class="v">Web · Mobile</div></div>
+        <div><div class="k">Status</div><div class="v on">Open</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <div class="eyebrow">Skills</div>
+    <h2 class="section-title">A toolkit for <span class="text-gradient">crafting interfaces</span></h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill glass glass-hover reveal"><div class="ic">🔍</div><div class="name">UX Research</div><div class="desc">Interviews · usability tests</div></div>
+    <div class="skill glass glass-hover reveal"><div class="ic">🎨</div><div class="name">UI Design</div><div class="desc">Visual systems · color</div></div>
+    <div class="skill glass glass-hover reveal"><div class="ic">✏️</div><div class="name">Wireframing</div><div class="desc">Low to high fidelity</div></div>
+    <div class="skill glass glass-hover reveal"><div class="ic">🅵</div><div class="name">Figma</div><div class="desc">Auto-layout · variables</div></div>
+    <div class="skill glass glass-hover reveal"><div class="ic">🧩</div><div class="name">Prototyping</div><div class="desc">Interactive flows</div></div>
+    <div class="skill glass glass-hover reveal"><div class="ic">🌐</div><div class="name">Web Design</div><div class="desc">Marketing · SaaS</div></div>
+    <div class="skill glass glass-hover reveal"><div class="ic">📱</div><div class="name">Mobile UI</div><div class="desc">iOS · Android</div></div>
+    <div class="skill glass glass-hover reveal"><div class="ic">⚙️</div><div class="name">Design Systems</div><div class="desc">Tokens · components</div></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="work">
+  <div class="reveal work-head">
+    <div>
+      <div class="eyebrow">Selected Work</div>
+      <h2 class="section-title">Featured <span class="text-gradient">Projects</span></h2>
+    </div>
+  </div>
+  <div class="work-grid">
+    <a href="#" class="proj p1 glass glass-hover reveal">
+      <div class="img"><div class="arrow">↗</div><div class="label"><span>Nova Finance</span></div></div>
+      <div class="meta-row"><div><div class="ttl">Nova Finance</div><div class="tag2">Dashboard · Fintech</div></div><div class="yr">2025</div></div>
+    </a>
+    <a href="#" class="proj p2 glass glass-hover reveal">
+      <div class="img"><div class="arrow">↗</div><div class="label"><span>Wander</span></div></div>
+      <div class="meta-row"><div><div class="ttl">Wander</div><div class="tag2">Travel Booking · iOS</div></div><div class="yr">2025</div></div>
+    </a>
+    <a href="#" class="proj p3 glass glass-hover reveal">
+      <div class="img"><div class="arrow">↗</div><div class="label"><span>Aura Threads</span></div></div>
+      <div class="meta-row"><div><div class="ttl">Aura Threads</div><div class="tag2">Fashion · E-commerce</div></div><div class="yr">2024</div></div>
+    </a>
+    <a href="#" class="proj p4 glass glass-hover reveal">
+      <div class="img"><div class="arrow">↗</div><div class="label"><span>Synthesis</span></div></div>
+      <div class="meta-row"><div><div class="ttl">Synthesis</div><div class="tag2">AI Productivity Tool</div></div><div class="yr">2024</div></div>
+    </a>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="experience">
+  <div class="reveal">
+    <div class="eyebrow">Experience</div>
+    <h2 class="section-title">The <span class="text-gradient">Journey</span></h2>
+  </div>
+  <div class="timeline">
+    <div class="t-item reveal"><div class="t-dot"></div><div class="t-card glass"><div class="t-year">2025</div><div class="t-role">Senior Product Designer</div><div class="t-co">Freelance</div><div class="t-desc">Designing SaaS and mobile products for global startups.</div></div></div>
+    <div class="t-item reveal"><div class="t-dot"></div><div class="t-card glass"><div class="t-year">2023</div><div class="t-role">Lead UI Designer</div><div class="t-co">Nebula Studio</div><div class="t-desc">Led design systems and brand-driven web experiences.</div></div></div>
+    <div class="t-item reveal"><div class="t-dot"></div><div class="t-card glass"><div class="t-year">2021</div><div class="t-role">Product Designer</div><div class="t-co">Orbit Labs</div><div class="t-desc">Shipped fintech dashboards and onboarding flows.</div></div></div>
+    <div class="t-item reveal"><div class="t-dot"></div><div class="t-card glass"><div class="t-year">2019</div><div class="t-role">UX Designer</div><div class="t-co">Pixelhouse</div><div class="t-desc">Started my journey in user-centered design.</div></div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="reveal">
+    <div class="eyebrow" style="text-align:center">Contact</div>
+    <h2>Let's build <span class="text-gradient">something great</span></h2>
+    <p class="lede">Have a project in mind? Send a message — I usually reply within 24 hours.</p>
+  </div>
+  <form class="contact-form glass reveal" onsubmit="event.preventDefault();this.querySelector('.submit').textContent='Sent ✓'">
+    <div class="grid2">
+      <div class="field"><label>Name</label><input required placeholder="Your name" /></div>
+      <div class="field"><label>Email</label><input required type="email" placeholder="you@email.com" /></div>
+    </div>
+    <div class="field" style="margin-top:24px"><label>Message</label><textarea required rows="5" placeholder="Tell me about your project..."></textarea></div>
+    <button class="submit" type="submit">Send Message →</button>
+  </form>
+  <div class="socials reveal">
+    <a href="#" class="glass glass-hover">✉</a>
+    <a href="#" class="glass glass-hover">⌨</a>
+    <a href="#" class="glass glass-hover">in</a>
+    <a href="#" class="glass glass-hover">𝕏</a>
+  </div>
+</section>
+
+<footer>
+  <div class="inner">
+    <div>© <span id="yr"></span> Pi Seth — Designing Digital Simplicity.</div>
+    <div style="font-family:'Space Grotesk'">Crafted with <span class="heart">♥</span> & pixels.</div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cur = document.getElementById('cursor');
+  addEventListener('mousemove', e => { cur.style.left = e.clientX+'px'; cur.style.top = e.clientY+'px'; });
+  addEventListener('mouseover', e => {
+    cur.classList.toggle('hover', !!e.target.closest('a,button,.glass-hover,.skill,.proj'));
+  });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Typer
+  const phrases = ["UX/UI Designer","Product Thinker","Interface Crafter"];
+  const t = document.getElementById('typer');
+  let pi=0, ci=0, del=false;
+  function tick(){
+    const w = phrases[pi];
+    if(!del){ t.textContent = w.slice(0, ++ci); if(ci===w.length){ del=true; return setTimeout(tick,1400);} }
+    else { t.textContent = w.slice(0, --ci); if(ci===0){ del=false; pi=(pi+1)%phrases.length; } }
+    setTimeout(tick, del?40:90);
+  }
+  tick();
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
